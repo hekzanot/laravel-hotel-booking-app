@@ -19,6 +19,7 @@ class PropertyController extends Controller
 {
     protected $checkInDate;
     protected $checkOutDate;
+    protected $activeTemplate;
 
     public function __construct(){
         $this->activeTemplate = activeTemplate();

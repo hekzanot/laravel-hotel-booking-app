@@ -41,7 +41,7 @@ class PropertyController extends Controller
     }
 
     public function saveProperty(Request $request, $id=0){
-   
+
         $request->validate([
             'name' => 'required',
             'image' => ['sometimes','image',new FileTypeValidate(['jpeg', 'jpg', 'png'])],
@@ -66,7 +66,7 @@ class PropertyController extends Controller
             $notification = 'Property added successfully';
             $filename = '';
             $multipleImages = [];
-        
+
             $path = imagePath()['property']['path'];
             $size = imagePath()['property']['size'];
 
@@ -97,14 +97,16 @@ class PropertyController extends Controller
             }
 
 
-            if ($request->hasFile('image')) {
-                try {
-                    $filename = uploadImage($request->image, $path, $size, $oldImage);
-                } catch (\Exception $exp) {
-                    $notify[] = ['error', 'Image could not be uploaded.'];
-                    return back()->withNotify($notify);
-                }
-            }
+try {
+    $filename = uploadImage($request->image, $path, $size, $oldImage);
+} catch (\Exception $exp) {
+    dd($exp->getMessage()); // Hata mesajını bas
+    // veya
+    // var_dump($exp->getMessage()); 
+    $notify[] = ['error', 'Image could not be uploaded.'];
+    return back()->withNotify($notify);
+}
+
 
             if ($request->hasFile('images')) {
                 for($i=0; $i < count($request->images); $i++){

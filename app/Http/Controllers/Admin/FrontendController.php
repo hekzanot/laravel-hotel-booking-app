@@ -14,6 +14,7 @@ class FrontendController extends Controller
     public function templates()
     {
         $pageTitle = 'Templates';
+        $templates = [];
         $temPaths = array_filter(glob('core/resources/views/templates/*'), 'is_dir');
         foreach ($temPaths as $key => $temp) {
             $arr = explode('/', $temp);
