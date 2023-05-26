@@ -23,12 +23,12 @@
               @endforeach
             </select>
 
-            @if (!auth()->check() && !auth()->guard('owner')->check())
+            {{-- @if (!auth()->check() && !auth()->guard('owner')->check())
             <div class="d-flex flex-wrap" style="gap:10px">
               <a href="{{ route('user.login') }}" class="btn btn-sm btn-outline--base">@lang('User Login')</a>
               <a href="{{ route('owner.login') }}" class="btn btn-sm btn--base">@lang('Owner Login')</a>
             </div>
-            @endif
+            @endif --}}
 
             @auth
             <a href="{{ route('user.home') }}" class="btn btn-sm btn--base">@lang('Dashboard')</a>

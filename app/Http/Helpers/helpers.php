@@ -37,7 +37,7 @@ function sidebarVariation(){
 
 function systemDetails()
 {
-    $system['name'] = 'hotellab';
+    $system['name'] = 'LA GOLFO';
     $system['version'] = '1.0';
     return $system;
 }

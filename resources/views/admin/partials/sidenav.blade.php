@@ -141,7 +141,7 @@
                     </div>
                 </li>
 
-                <li class="sidebar-menu-item sidebar-dropdown">
+                {{-- <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.owners*',3)}}">
                         <i class="menu-icon las la-user-friends"></i>
                         <span class="menu-title">@lang('Manage Owners')</span>
@@ -216,7 +216,7 @@
 
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.gateway*',3)}}">
@@ -226,12 +226,12 @@
                     <div class="sidebar-submenu {{menuActive('admin.gateway*',2)}} ">
                         <ul>
 
-                            <li class="sidebar-menu-item {{menuActive('admin.gateway.automatic.index')}} ">
+                            {{-- <li class="sidebar-menu-item {{menuActive('admin.gateway.automatic.index')}} ">
                                 <a href="{{route('admin.gateway.automatic.index')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Automatic Gateways')</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="sidebar-menu-item {{menuActive('admin.gateway.manual.index')}} ">
                                 <a href="{{route('admin.gateway.manual.index')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
@@ -297,7 +297,7 @@
                     </div>
                 </li>
 
-                <li class="sidebar-menu-item sidebar-dropdown">
+                {{-- <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.withdraw*',3)}}">
                         <i class="menu-icon la la-bank"></i>
                         <span class="menu-title">@lang('Withdrawals') </span>
@@ -352,7 +352,7 @@
 
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.ticket*',3)}}">
@@ -462,14 +462,14 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu-item {{menuActive('admin.extensions.index')}}">
+                {{-- <li class="sidebar-menu-item {{menuActive('admin.extensions.index')}}">
                     <a href="{{route('admin.extensions.index')}}" class="nav-link">
                         <i class="menu-icon las la-cogs"></i>
                         <span class="menu-title">@lang('Extensions')</span>
                     </a>
-                </li>
+                </li> --}}
 
-                <li class="sidebar-menu-item  {{menuActive(['admin.language.manage','admin.language.key'])}}">
+                {{-- <li class="sidebar-menu-item  {{menuActive(['admin.language.manage','admin.language.key'])}}">
                     <a href="{{route('admin.language.manage')}}" class="nav-link"
                        data-default-url="{{ route('admin.language.manage') }}">
                         <i class="menu-icon las la-language"></i>
@@ -542,16 +542,16 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="sidebar__menu-header">@lang('Frontend Manager')</li>
 
-                <li class="sidebar-menu-item {{menuActive('admin.frontend.templates')}}">
+                {{-- <li class="sidebar-menu-item {{menuActive('admin.frontend.templates')}}">
                     <a href="{{route('admin.frontend.templates')}}" class="nav-link ">
                         <i class="menu-icon la la-html5"></i>
                         <span class="menu-title">@lang('Manage Templates')</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="sidebar-menu-item {{menuActive('admin.frontend.manage.pages')}}">
                     <a href="{{route('admin.frontend.manage.pages')}}" class="nav-link ">
@@ -585,7 +585,7 @@
                     </div>
                 </li>
 
-                <li class="sidebar__menu-header">@lang('Extra')</li>
+                {{-- <li class="sidebar__menu-header">@lang('Extra')</li>
 
 
                 <li class="sidebar-menu-item {{menuActive('admin.setting.cookie')}}">
@@ -623,7 +623,7 @@
                         <i class="menu-icon las la-bug"></i>
                         <span class="menu-title">@lang('Report & Request') </span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
             <div class="text-center mb-3 text-uppercase">
                 <span class="text--primary">{{__(systemDetails()['name'])}}</span>

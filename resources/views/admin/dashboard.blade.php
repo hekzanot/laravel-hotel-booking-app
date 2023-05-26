@@ -197,7 +197,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-6 col-sm-6 mb-30">
                     <div class="widget-three box--shadow2 b-radius--5 bg--danger text-white">
                         <div class="widget-three__content">
@@ -237,26 +237,26 @@
     </div><!-- row end -->
 
     <div class="row mb-none-30 mt-5">
-        <div class="col-xl-6 mb-30">
+        {{-- <div class="col-xl-6 mb-30">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@lang('Last 30 days Payment History')</h5>
                     <div id="deposit-line"></div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="col-xl-6 mb-30">
+        {{-- <div class="col-xl-6 mb-30">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@lang('Last 30 days Withdraw History')</h5>
                     <div id="withdraw-line"></div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
-    <div class="row mb-none-30 mt-5">
+    {{-- <div class="row mb-none-30 mt-5">
         <div class="col-xl-4 col-lg-6 mb-30">
             <div class="card overflow-hidden">
                 <div class="card-body">
@@ -281,7 +281,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 
@@ -699,6 +699,6 @@
                 }
             }
         });
-        
+
     </script>
 @endpush
