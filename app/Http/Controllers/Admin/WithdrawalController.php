@@ -21,7 +21,7 @@ class WithdrawalController extends Controller
         $emptyMessage = 'No withdrawal found';
         return view('admin.withdraw.withdrawals', compact('pageTitle', 'withdrawals', 'emptyMessage'));
     }
-    
+
     public function approved()
     {
         $pageTitle = 'Approved Withdrawals';

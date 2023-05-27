@@ -245,98 +245,101 @@ class PropertyController extends Controller
         return view($this->activeTemplate.'property.property_category_rooms',  compact('pageTitle', 'property', 'roomCategories', 'request'));
     }
 
-    public function bookingProcess(Request $request)
-    {
-        $request->validate([
-            'room_list' => 'required'
-        ],[
-            'room_list.required' => 'Please select minimum one room.'
-        ]);
+public function bookingProcess(Request $request)
+{
+    $request->validate([
+        'room_list' => 'required'
+    ],[
+        'room_list.required' => 'Please select minimum one room.'
+    ]);
 
-        $totalPrice = 0;
-        $roomList = explode(',', $request->room_list);
+    $totalPrice = 0;
+    $roomList = explode(',', $request->room_list);
 
-        $date = explode(' - ', $request->date);
-        $request->merge([
-            'check_in_date' => $date[0],
-            'check_out_date' => @$date[1],
-        ]);
-        $request->validate([
-            'check_in_date' => 'required|date_format:m/d/Y|after:yesterday',
-            'check_out_date' => 'required|date_format:m/d/Y|after:check_in_date',
-        ]);
+    $date = explode(' - ', $request->date);
+    $request->merge([
+        'check_in_date' => $date[0],
+        'check_out_date' => @$date[1],
+    ]);
+    $request->validate([
+        'check_in_date' => 'required|date_format:m/d/Y|after:yesterday',
+        'check_out_date' => 'required|date_format:m/d/Y|after:check_in_date',
+    ]);
 
-        $checkInDate = Carbon::parse($request->check_in_date);
-        $checkOutDate = Carbon::parse($request->check_out_date);
+    $checkInDate = Carbon::parse($request->check_in_date);
+    $checkOutDate = Carbon::parse($request->check_out_date);
 
-        $totalDays = $checkInDate->diffInDays($checkOutDate);
+    $totalDays = $checkInDate->diffInDays($checkOutDate);
 
-        if($checkInDate == $checkOutDate){
-            $notify[] = ['error', 'Check in and Check out date should not be same !'];
-            return back()->withNotify($notify);
-        }
-
-        $rooms = Room::where('status',1)->whereIn('id',$roomList)->with(['bookedRooms'=>function($bookedRooms) use ($checkInDate,$checkOutDate){
-            $bookedRooms->where(function($q) use ($checkInDate,$checkOutDate){
-                $q->where(function($qq) use ($checkInDate,$checkOutDate){
-                    $qq->where('date_from','<=',$checkInDate)->where('date_to','>',$checkInDate);
-                })->orWhere(function($qqq) use ($checkInDate,$checkOutDate){
-                    $qqq->where('date_from','<=',$checkOutDate)->where('date_to','>=',$checkOutDate);
-                });
-            });
-        }])->get();
-
-        foreach ($rooms as $room) {
-            if($room->bookedRooms->count() > 0){
-                $notify[] = ['error','Some rooms has already booked'];
-                return back()->withNotify($notify);
-            }
-        }
-
-        if ($rooms->count() <= 0) {
-            $notify[] = ['error','There is no room found'];
-            return back()->withNotify($notify);
-        }
-        $myRooms = clone $rooms;
-
-        $totalPrice = $rooms->sum('price');
-        $property = $rooms->first()->property;
-
-        $discount = $property->discount;
-        if ($discount != 0) {
-            $totalPrice -= ($totalPrice * $discount / 100);
-        }
-        $totalPrice = $totalPrice * $totalDays;
-
-        $bookedProperty = new BookedProperty();
-        $bookedProperty->property_id = $property->id;
-        $bookedProperty->user_id = auth()->id();
-        $bookedProperty->total_price = $totalPrice;
-        $bookedProperty->date_from = $checkInDate;
-        $bookedProperty->date_to = $checkOutDate;
-        $bookedProperty->save();
-
-        foreach ($myRooms as $room) {
-            $bookedRoom = new BookedRoom();
-            $bookedRoom->booked_property_id = $bookedProperty->id;
-            $bookedRoom->property_id = $property->id;
-            $bookedRoom->room_category_id = $room->roomCategory->id;
-            $bookedRoom->room_id = $room->id;
-            $bookedRoom->price = $discount == 0 ?  $room->price*$totalDays : ($room->price * (100-$discount)/100)*$totalDays;
-            $bookedRoom->date_from = $checkInDate;
-            $bookedRoom->date_to = $checkOutDate;
-            $bookedRoom->save();
-        }
-
-        session()->put('checkout_data',[
-            'totalPrice'=>$totalPrice,
-            'booked_property'=>$bookedProperty,
-        ]);
-
-
-        return redirect()->route('user.deposit');
-
+    if($checkInDate == $checkOutDate){
+        $notify[] = ['error', 'Check in and Check out date should not be same!'];
+        return back()->withNotify($notify);
     }
+
+    $rooms = Room::where('status', 1)->whereIn('id', $roomList)->with(['bookedRooms' => function($bookedRooms) use ($checkInDate, $checkOutDate){
+        $bookedRooms->where(function($q) use ($checkInDate, $checkOutDate){
+            $q->where(function($qq) use ($checkInDate, $checkOutDate){
+                $qq->where('date_from', '<=', $checkInDate)->where('date_to', '>', $checkInDate);
+            })->orWhere(function($qqq) use ($checkInDate, $checkOutDate){
+                $qqq->where('date_from', '<=', $checkOutDate)->where('date_to', '>=', $checkOutDate);
+            });
+        })->where(function($q){
+            $q->where('status', '!=', 2) // Status 2 olanları hariç tutar
+            ->orWhereNull('status'); // Status değeri null ise de hariç tutar
+        });
+    }])->get();
+
+    foreach ($rooms as $room) {
+        if($room->bookedRooms->count() > 0){
+            $notify[] = ['error', 'Some rooms have already been booked'];
+            return back()->withNotify($notify);
+        }
+    }
+
+    if ($rooms->count() <= 0) {
+        $notify[] = ['error', 'There are no available rooms'];
+        return back()->withNotify($notify);
+    }
+    $myRooms = clone $rooms;
+
+    $totalPrice = $rooms->sum('price');
+    $property = $rooms->first()->property;
+
+    $discount = $property->discount;
+    if ($discount != 0) {
+        $totalPrice -= ($totalPrice * $discount / 100);
+    }
+    $totalPrice = $totalPrice * $totalDays;
+
+    $bookedProperty = new BookedProperty();
+    $bookedProperty->property_id = $property->id;
+    $bookedProperty->user_id = auth()->id();
+    $bookedProperty->total_price = $totalPrice;
+    $bookedProperty->date_from = $checkInDate;
+    $bookedProperty->date_to = $checkOutDate;
+    $bookedProperty->save();
+
+    foreach ($myRooms as $room) {
+        $bookedRoom = new BookedRoom();
+        $bookedRoom->booked_property_id = $bookedProperty->id;
+        $bookedRoom->property_id = $property->id;
+        $bookedRoom->room_category_id = $room->roomCategory->id;
+        $bookedRoom->room_id = $room->id;
+        $bookedRoom->price = $discount == 0 ?  $room->price*$totalDays : ($room->price * (100-$discount)/100)*$totalDays;
+        $bookedRoom->date_from = $checkInDate;
+        $bookedRoom->date_to = $checkOutDate;
+        $bookedRoom->status = 0; // Yeni eklenen satır
+        $bookedRoom->save();
+    }
+
+    session()->put('checkout_data',[
+        'totalPrice' => $totalPrice,
+        'booked_property' => $bookedProperty,
+    ]);
+
+    return redirect()->route('user.deposit');
+}
+
 
     public function reviewLoad(Request $request)
     {

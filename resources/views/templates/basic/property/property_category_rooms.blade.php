@@ -60,6 +60,7 @@
                                                 @if (!$searchData || ($searchData && $searchData['date'] == null))
                                                     <p class="text-danger my-3">@lang('** Select date to see available rooms.')</p>
                                                 @else
+                                                {{-- ->where('status', 2) --}}
                                                 @foreach ($roomCategories as $category)
                                                     @foreach ($category->rooms as $room)
                                                         @if(!$category->bookedRooms->where('room_id',$room->id)->first())
@@ -128,7 +129,7 @@
                                 </div>
                             </form>
                         </div>
-                                                 
+
                             <div class="mt-4">
                                 <ul class="area-list room-list-header">
                                     <li class="area-list__item d-flex justify-content-between align-items-center">
@@ -202,7 +203,7 @@
                                     </div>
                                 @endif
                             </div>
-                     
+
 
                         <div class="mt-4">
                             <form action="{{ route('property.category.rooms.date', [$property->id, slug($property->name)]) }}" method="GET">

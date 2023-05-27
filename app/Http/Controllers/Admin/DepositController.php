@@ -62,7 +62,7 @@ class DepositController extends Controller
     }
 
     public function depositViaMethod($method,$type = null){
-        $method = Gateway::where('alias',$method)->firstOrFail();        
+        $method = Gateway::where('alias',$method)->firstOrFail();
         if ($type == 'approved') {
             $pageTitle = 'Approved Payment Via '.$method->name;
             $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 1)->orderBy('id','desc')->with($this->depoRelations);
@@ -177,7 +177,7 @@ class DepositController extends Controller
         $deposit = Deposit::where('id',$request->id)->where('status',2)->firstOrFail();
         $deposit->status = 1;
         $deposit->save();
-        
+
         $user = User::find($deposit->user_id);
 
         $bookedProperty = BookedProperty::find($deposit->booked_property_id);

@@ -187,7 +187,7 @@
     <script>
         (function ($) {
             "use strict";
-            
+
             $('.approveBtn').on('click', function () {
                 var modal = $('#approveModal');
                 modal.find('input[name=id]').val($(this).data('id'));

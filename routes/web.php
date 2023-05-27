@@ -512,7 +512,6 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('pending-reviews', 'UserController@pendingReview')->name('review.pending');
             Route::get('completed-reviews', 'UserController@completedReview')->name('review.complete');
             Route::get('properties-history', 'UserController@propertyHistory')->name('property.history');
-
             Route::post('property/booking', 'PropertyController@bookingProcess')->name('property.booking');
 
         });
